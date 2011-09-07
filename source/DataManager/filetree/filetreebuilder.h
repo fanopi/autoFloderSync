@@ -16,7 +16,7 @@
 
 namespace YF{
 
-// 利用filetree来封装xmldocument
+
 class FileTree : public XmlDocument{
  public:
 	FileTree(long id){
