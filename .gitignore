@@ -1,0 +1,6 @@
+#ignore the eclipse project & cproject
+.project
+.cproject
+
+#ignore the object files.
+*.o
