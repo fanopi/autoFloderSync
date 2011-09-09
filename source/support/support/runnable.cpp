@@ -9,7 +9,7 @@
 
 namespace yf{
 
-FUNSTATE MessageQueue::InMessageQueue(MessageObj* p_first_message){
+Status MessageQueue::InQueue(MessageObj* p_first_message){
   BOOL   bContinue = TRUE;
   while(bContinue){
   	if (WAIT_OBJECT_0 != WaitForSingleObject(h_product_Semaphore, 0L))
@@ -30,9 +30,9 @@ FUNSTATE MessageQueue::InMessageQueue(MessageObj* p_first_message){
 	 bContinue = FALSE;
   }
 
-  return RTN_OK;
+  return OK;
 EXIT:
-  return RTN_FAIL;
+  return FAIL;
 }
 
 MessageObj* MessageQueue::GetMessageFormQueue(){

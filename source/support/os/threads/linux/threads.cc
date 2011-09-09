@@ -1,14 +1,10 @@
 /*
- * threads.h
+ * threads.cc
  *
- *  Created on: 2011-9-8
+ *  Created on: 2011-9-9
  *      Author: fan
  */
-
-#ifndef THREADS_H_
-#define THREADS_H_
-
-#include <pthread.h>
+#include "threads.h"
 namespace yf{
 
 typedef pthread_t 					Handle;
@@ -18,12 +14,11 @@ typedef LPDWORD 				LPDWORD;
 Handle CreateThread(Handle* handle,
 					const pthread_attr_t* attr,
 					void*(*start_routine)(void*),
-					void* param);
-
-Handle CreateSemaphore();
-
+					void* param){
+	return (Handle)::pthread_creat(handle, attr, start_routine, param);
+}
 
 }
 
-#endif /* THREADS_H_ */
+
 

@@ -23,9 +23,12 @@ template <typename THREADOBJECT> struct ThreadInfo{
 
   THREADOBJECT* 	object;
   ThreadFunction 	function;
-  long 				parameter; // parameter of function
+  long 				parameter; // parameter of the function
 };
-
+/*
+ * Noted that thanks of the class is Null, the sizeof(ThreadInfo<NullClass>)
+ * == sizeof(struct ThreadInfo). this character is usful for the YFThread.
+ */
 class NullClass{
   /*nothing to do*/
 };
@@ -45,10 +48,13 @@ class YFThread{
   static int  ThreadProc(NullThreadInfo* object);
 
  private:
-  Handle 	   handle_;
-  ThreadInfo*  threadinfo_;
+  Handle 	   		handle_;
+  NullThreadInfo*  	threadinfo_;
 };
-
+/*
+ * this function using template instance automaticily introcude.
+ * 这个函数使用了模板参数自动推导的特性
+ */
 template<typename THREADOBJECT>
 bool YFThread::Start(THREADOBJECT* object,NullThreadFunction func, long parameter){
  if(handle_ || NULL == object || NULL == func)
@@ -60,9 +66,12 @@ bool YFThread::Start(THREADOBJECT* object,NullThreadFunction func, long paramete
  thread_info->function = (ThreadInfo<THREADOBJECT>::ThreadFunction)func;
 
  threadinfo_ = (ThreadInfo*)thread_info;
+#ifdef _WIN32
  int gdwThreadId = 0;
  handle_ = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ThreadProc, threadinfo_, 0, (LPDWORD)&gdwThreadId);
-
+#else
+ handle_ = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ThreadProc, threadinfo_);
+#endif
  return NULL == handle_;
 }
 

@@ -8,9 +8,9 @@
 #include "threads.hpp"
 namespace yf{
 
-int  YFThread::ThreadProc(ThreadInfo* p_object){
-	 if(NULL != p_object)
-		return (p_object->obj->*(p_object->threadFunc))(p_object->param);
+int  YFThread::ThreadProc(NullThreadInfo* object){
+	 if(NULL != object)
+		return (object->object->*(object->function))(object->parameter);
 	 return 0;
 }
 
