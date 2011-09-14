@@ -8,7 +8,7 @@
 #ifndef THREADSPART_H_
 #define THREADSPART_H_
 
-#include "../../support/typedef.h"
+#include "../../../support/typedef.h"
 #ifdef _WIN32 // _LINUX
 #include "windows/threads.h"
 #else
@@ -18,15 +18,16 @@
 namespace yf{
 
 //enclose thread running info
-template <typename THREADOBJECT> struct ThreadInfo{
+template <typename THREADOBJECT>
+struct ThreadInfo{
   typedef int (THREADOBJECT::*ThreadFunction)(long);
 
   THREADOBJECT* 	object;
   ThreadFunction 	function;
-  long 				parameter; // parameter of the function
+  long 				    parameter; // parameter of the function
 };
-/*
- * Noted that thanks of the class is Null, the sizeof(ThreadInfo<NullClass>)
+
+/** Noted that thanks of the class is Null, the sizeof(ThreadInfo<NullClass>)
  * == sizeof(struct ThreadInfo). this character is usful for the YFThread.
  */
 class NullClass{
@@ -48,29 +49,29 @@ class YFThread{
   static int  ThreadProc(NullThreadInfo* object);
 
  private:
-  Handle 	   		handle_;
-  NullThreadInfo*  	threadinfo_;
+  Handle 	   		  handle_;
+  NullThreadInfo* threadinfo_;
 };
-/*
- * this function using template instance automaticily introcude.
+
+/** this function using template instance automaticily introcude.
  * 这个函数使用了模板参数自动推导的特性
  */
 template<typename THREADOBJECT>
 bool YFThread::Start(THREADOBJECT* object,NullThreadFunction func, long parameter){
- if(handle_ || NULL == object || NULL == func)
-  return false; // thread have running.
+  if(handle_ || NULL == object || NULL == func)
+    return false; // thread have running.
 
- ThreadInfo<THREADOBJECT>* thread_info = new ThreadInfo<THREADOBJECT>;
- thread_info->object = object;
- thread_info->parameter = parameter;
- thread_info->function = (ThreadInfo<THREADOBJECT>::ThreadFunction)func;
+  ThreadInfo<THREADOBJECT>* thread_info = new ThreadInfo<THREADOBJECT>;
+  thread_info->object = object;
+  thread_info->parameter = parameter;
+  thread_info->function = (ThreadInfo<THREADOBJECT>::ThreadFunction)func;
 
- threadinfo_ = (ThreadInfo*)thread_info;
+ threadinfo_ = (NullThreadInfo*)thread_info;
 #ifdef _WIN32
  int gdwThreadId = 0;
  handle_ = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ThreadProc, threadinfo_, 0, (LPDWORD)&gdwThreadId);
 #else
- handle_ = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ThreadProc, threadinfo_);
+ int result = pthread_create(&handle_, NULL, (void*(*)(void*))ThreadProc, NULL);
 #endif
  return NULL == handle_;
 }
