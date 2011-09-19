@@ -6,6 +6,7 @@
  */
 
 #include "threads.hpp"
+
 namespace yf{
 
 int  YFThread::ThreadProc(NullThreadInfo* object){

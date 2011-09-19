@@ -46,7 +46,7 @@ class FileScannor{
 	static FileScannor* singleton_;
 };
 
-class FloderOperator : public FileOperator{
+class FloderOperator{
  public:
 		FUNSTATE ReturnScanResult();
 		FUNSTATE FloderOperator::SendMessage(Thread_type who,

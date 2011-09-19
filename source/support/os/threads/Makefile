@@ -8,7 +8,7 @@ LIBS =
 TARGET =	YF
 
 $(TARGET):	$(OBJS)
-	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
+	$(CXX) -lpthread -o $(TARGET) $(OBJS) $(LIBS)
 
 all:	$(TARGET)
 

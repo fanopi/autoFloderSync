@@ -18,20 +18,19 @@ class TestMutilThread {
 };
 
 void TestMutilThread::run(){
-  thread_.Start(this, (NullThreadFunction)&foo, 0);
+  thread_.Start(this, (NullThreadFunction)&TestMutilThread::foo, 0);
 }
 
-int foo(long parameter){
+int TestMutilThread::foo(long parameter){
   printf( "hello world\n");
   return 0;
 }
+} /// namespace yf
 
 int main(){
-  TestMutilThread test;
+  yf::TestMutilThread test;
   test.run();
 
   return 0;
 }
 
-
-}
